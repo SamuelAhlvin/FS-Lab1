@@ -31,7 +31,7 @@ router.get('/albums', async (req, res) => {
 
 // Get specific album by title
 router.get('/albums/:title', async (req, res) => {
-  const album = await musicAlbum.find({ title: `${req.params.title}` });
+  const album = await musicAlbum.find({ title: req.params.title });
   if (album.length > 0) {
     res.json(album);
   } else {
@@ -39,6 +39,7 @@ router.get('/albums/:title', async (req, res) => {
   }
 })
 
+// Add a new album
 router.post('/albums/', async (req, res) => {
 
   const exists = await musicAlbum.find({ title: req.body.title, artist: req.body.artist });
@@ -59,6 +60,35 @@ router.post('/albums/', async (req, res) => {
     } catch (err) {
       console.log(err);
     }
+  }
+
+})
+
+// Updating an album
+router.put('/albums/:id', async (req, res) => {
+
+  const album = await musicAlbum.findById(parseInt(req.params.id));
+
+  if (album != null) {
+    if (req.body.title != null) {
+      album.title = req.body.title;
+    }
+    if (req.body.artist != null) {
+      album.artist = req.body.artist;
+    }
+    if (req.body.year != null) {
+      album.year = req.body.year;
+    }
+
+    try {
+      const updateAlbum = await album.save()
+      res.status(200).json(updateAlbum);
+    } catch (err) {
+      console.log(err);
+    }
+
+  } else {
+    res.status(404).json('Album not found');
   }
 
 })
