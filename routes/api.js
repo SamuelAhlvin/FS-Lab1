@@ -30,9 +30,14 @@ router.get('/albums', async (req, res) => {
 })
 
 // Get specific album by title
-router.get('/albums/:title', (req, res) => {
-  let album = req.params.title;
-  res.send(album);
+router.get('/albums/:title', async (req, res) => {
+  const album = await musicAlbum.find({ title: `${req.params.title}` });
+  if (album.length > 0) {
+    res.json(album);
+  } else {
+    res.status(404).json('Album not found');
+  }
+
 })
 
 module.exports = router;
