@@ -37,6 +37,29 @@ router.get('/albums/:title', async (req, res) => {
   } else {
     res.status(404).json('Album not found');
   }
+})
+
+router.post('/albums/', async (req, res) => {
+
+  const exists = await musicAlbum.find({ title: req.body.title, artist: req.body.artist });
+
+  if (exists.length > 0) {
+    res.status(409).json('Conflict, album already exists');
+  } else {
+    const album = new musicAlbum({
+      title: req.body.title,
+      artist: req.body.artist,
+      year: req.body.year,
+      _id: req.body._id
+    });
+
+    try {
+      const newAlbum = await album.save()
+      res.status(201).json(newAlbum);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 })
 
