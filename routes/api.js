@@ -14,8 +14,19 @@ const db = mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log("Connected to database"));
 
+const musicAlbumSchema = new mongoose.Schema({
+  _id: Number,
+  title: String,
+  artist: String,
+  year: Number
+}, { collection: 'MusicAlbums' });
+
+const musicAlbum = mongoose.model('MusicAlbums', musicAlbumSchema);
+
 // Get all albums
 router.get('/albums', async (req, res) => {
+  const albums = await musicAlbum.find();
+  res.json(albums);
 })
 
 // Get specific album by title
