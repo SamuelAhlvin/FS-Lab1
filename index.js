@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require("dotenv").config();
 
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
