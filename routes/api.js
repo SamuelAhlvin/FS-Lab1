@@ -93,4 +93,23 @@ router.put('/albums/:id', async (req, res) => {
 
 })
 
+//Deleting an album
+router.delete('/albums/:id', async (req, res) => {
+
+  const album = await musicAlbum.findById(parseInt(req.params.id));
+
+  if (album != null) {
+    try {
+      await musicAlbum.deleteOne({ _id: parseInt(req.params.id) })
+      res.status(200).json("Removed successfully");
+    } catch (err) {
+      console.log(err);
+    }
+
+  } else {
+    res.status(404).json('Album not found');
+  }
+
+})
+
 module.exports = router;
