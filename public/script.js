@@ -1,7 +1,8 @@
+let currentId = null;
+const modal = document.getElementById("myModal");
 fetch('http://localhost:3000/api/albums')
   .then(response => response.json())
   .then(data => {
-    const modal = document.getElementById("myModal");
     const span = document.getElementsByClassName("close")[0];
     span.onclick = function () {
       modal.style.display = "none";
@@ -29,6 +30,7 @@ fetch('http://localhost:3000/api/albums')
         const updateHeader = document.getElementById("albumUpdate");
         updateHeader.textContent = `Update album "${album.title}"`;
         modal.style.display = "block";
+        currentId = id.textContent;
       });
       updateElement.appendChild(updateButton);
 
@@ -50,4 +52,27 @@ fetch('http://localhost:3000/api/albums')
       albumsTable.appendChild(albumRow);
     });
   })
-  .catch(error => console.error("Error fetching albums:", error)); 
+  .catch(error => console.error("Error fetching albums:", error));
+
+const updateBtn = document.getElementById("updateButton");
+
+updateBtn.addEventListener('click', async () => {
+  const name = nameText.value;
+  const artist = artistText.value;
+  const year = yearText.value;
+
+  try {
+    await fetch(`http://localhost:3000/api/albums/${currentId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, artist: artist, year: year })
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  modal.style.display = "none";
+  alert("Album successfully updated");
+  window.location.reload();
+});
