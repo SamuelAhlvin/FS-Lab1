@@ -1,12 +1,18 @@
 let currentId = null;
-const modal = document.getElementById("myModal");
+const modal = document.getElementById("updateModal");
+const deleteModal = document.getElementById("deleteModal");
 fetch('http://localhost:3000/api/albums')
   .then(response => response.json())
   .then(data => {
     const span = document.getElementsByClassName("close")[0];
+    const spanDelete = document.getElementsByClassName("closeDelete")[0];
     span.onclick = function () {
       modal.style.display = "none";
     }
+    spanDelete.onclick = function () {
+      deleteModal.style.display = "none";
+    }
+
     const albumsTable = document.querySelector('#albums-table tbody');
     data.forEach(album => {
       const albumRow = document.createElement('tr');
@@ -39,7 +45,10 @@ fetch('http://localhost:3000/api/albums')
       deleteButton.textContent = 'Delete';
 
       deleteButton.addEventListener('click', () => {
-        console.log("delete clicked");
+        const updateHeader = document.getElementById("albumDelete");
+        updateHeader.textContent = `Delete album "${album.title}"`;
+        deleteModal.style.display = "block";
+        currentId = id.textContent;
       });
       deleteElement.appendChild(deleteButton);
 
@@ -74,5 +83,24 @@ updateBtn.addEventListener('click', async () => {
 
   modal.style.display = "none";
   alert("Album successfully updated");
+  window.location.reload();
+});
+
+const deleteBtn = document.getElementById("deleteButton");
+
+deleteBtn.addEventListener('click', async () => {
+
+  try {
+    await fetch(`http://localhost:3000/api/albums/${currentId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  modal.style.display = "none";
+  alert(`Album successfully deleted`);
   window.location.reload();
 });
