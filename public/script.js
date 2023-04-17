@@ -1,6 +1,11 @@
 fetch('http://localhost:3000/api/albums')
   .then(response => response.json())
   .then(data => {
+    const modal = document.getElementById("myModal");
+    const span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
     const albumsTable = document.querySelector('#albums-table tbody');
     data.forEach(album => {
       const albumRow = document.createElement('tr');
@@ -21,6 +26,7 @@ fetch('http://localhost:3000/api/albums')
       updateButton.textContent = 'Update';
       updateButton.addEventListener('click', () => {
         console.log("update clicked");
+        modal.style.display = "block";
       });
       updateElement.appendChild(updateButton);
 
