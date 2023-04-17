@@ -24,8 +24,10 @@ fetch('http://localhost:3000/api/albums')
       const updateElement = document.createElement('td');
       const updateButton = document.createElement('button');
       updateButton.textContent = 'Update';
+
       updateButton.addEventListener('click', () => {
-        console.log("update clicked");
+        const updateHeader = document.getElementById("albumUpdate");
+        updateHeader.textContent = `Update album "${album.title}"`;
         modal.style.display = "block";
       });
       updateElement.appendChild(updateButton);
@@ -33,6 +35,7 @@ fetch('http://localhost:3000/api/albums')
       const deleteElement = document.createElement('td');
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
+
       deleteButton.addEventListener('click', () => {
         console.log("delete clicked");
       });
