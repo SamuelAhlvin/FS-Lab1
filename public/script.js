@@ -1,20 +1,27 @@
 let currentId = null;
 const modal = document.getElementById("updateModal");
 const deleteModal = document.getElementById("deleteModal");
+const createModal = document.getElementById("createModal");
+let idList = [];
 fetch('http://localhost:3000/api/albums')
   .then(response => response.json())
   .then(data => {
     const span = document.getElementsByClassName("close")[0];
     const spanDelete = document.getElementsByClassName("closeDelete")[0];
+    const spanCreate = document.getElementsByClassName("closeCreate")[0];
     span.onclick = function () {
       modal.style.display = "none";
     }
     spanDelete.onclick = function () {
       deleteModal.style.display = "none";
     }
+    spanCreate.onclick = function () {
+      createModal.style.display = "none";
+    }
 
     const albumsTable = document.querySelector('#albums-table tbody');
     data.forEach(album => {
+      idList.push(parseInt(album._id));
       const albumRow = document.createElement('tr');
       const albumTitle = document.createElement('td');
       albumTitle.textContent = album.title;
@@ -74,7 +81,7 @@ updateBtn.addEventListener('click', async () => {
     await fetch(`http://localhost:3000/api/albums/${currentId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, artist: artist, year: year })
+      body: JSON.stringify({ title: name, artist: artist, year: year })
     })
 
   } catch (error) {
@@ -103,4 +110,39 @@ deleteBtn.addEventListener('click', async () => {
   modal.style.display = "none";
   alert(`Album successfully deleted`);
   window.location.reload();
+});
+
+const createBtn = document.getElementById("createButton");
+const finalCreateBtn = document.getElementById("finalCreateButton");
+
+createBtn.addEventListener('click', async () => {
+  createModal.style.display = "block";
+  console.log(idList);
+});
+
+finalCreateBtn.addEventListener('click', async () => {
+  const name = createNameText.value;
+  const artist = createArtistText.value;
+  const year = createYearText.value;
+  const id = createIdText.value;
+
+  if (idList.includes(parseInt(id))) {
+    alert("Id is already used, please use another Id");
+
+  } else {
+    try {
+      await fetch(`http://localhost:3000/api/albums/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: name, artist: artist, year: year, _id: id })
+      })
+
+    } catch (error) {
+      console.log(error);
+    }
+
+    modal.style.display = "none";
+    alert("Album successfully created");
+    window.location.reload();
+  }
 });
