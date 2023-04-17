@@ -39,3 +39,7 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+th {
+  padding-right: 10px;
+}

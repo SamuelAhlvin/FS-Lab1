@@ -59,12 +59,18 @@ fetch('http://localhost:3000/api/albums')
       });
       deleteElement.appendChild(deleteButton);
 
+      const detailsElement = document.createElement('td');
+      const detailsButton = document.createElement('button');
+      detailsButton.textContent = 'Show Details';
+      detailsElement.appendChild(detailsButton);
+
       albumRow.appendChild(albumTitle);
       albumRow.appendChild(artist);
       albumRow.appendChild(year);
       albumRow.appendChild(id);
       albumRow.appendChild(updateElement);
       albumRow.appendChild(deleteElement);
+      albumRow.appendChild(detailsElement);
       albumsTable.appendChild(albumRow);
     });
   })
