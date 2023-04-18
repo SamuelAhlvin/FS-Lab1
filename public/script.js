@@ -2,6 +2,7 @@ let currentId = null;
 const modal = document.getElementById("updateModal");
 const deleteModal = document.getElementById("deleteModal");
 const createModal = document.getElementById("createModal");
+const detailsModal = document.getElementById("detailsModal");
 let idList = [];
 fetch('http://localhost:3000/api/albums')
   .then(response => response.json())
@@ -9,6 +10,7 @@ fetch('http://localhost:3000/api/albums')
     const span = document.getElementsByClassName("close")[0];
     const spanDelete = document.getElementsByClassName("closeDelete")[0];
     const spanCreate = document.getElementsByClassName("closeCreate")[0];
+    const spanDetails = document.getElementsByClassName("closeDetails")[0];
     span.onclick = function () {
       modal.style.display = "none";
     }
@@ -17,6 +19,9 @@ fetch('http://localhost:3000/api/albums')
     }
     spanCreate.onclick = function () {
       createModal.style.display = "none";
+    }
+    spanDetails.onclick = function () {
+      detailsModal.style.display = "none";
     }
 
     const albumsTable = document.querySelector('#albums-table tbody');
@@ -62,6 +67,18 @@ fetch('http://localhost:3000/api/albums')
       const detailsElement = document.createElement('td');
       const detailsButton = document.createElement('button');
       detailsButton.textContent = 'Show Details';
+      detailsButton.addEventListener('click', () => {
+        const detailsTitle = document.getElementById("detailsTitle");
+        const detailsArtist = document.getElementById("detailsArtist");
+        const detailsYear = document.getElementById("detailsYear");
+        const detailsId = document.getElementById("detailsId");
+        detailsTitle.textContent = `Title: ${album.title}`;
+        detailsArtist.textContent = `Artist: ${album.artist}`;
+        detailsYear.textContent = `Year: ${album.year}`;
+        detailsId.textContent = `Id: ${album._id}`;
+        detailsModal.style.display = "block";
+        currentId = id.textContent;
+      });
       detailsElement.appendChild(detailsButton);
 
       albumRow.appendChild(albumTitle);
