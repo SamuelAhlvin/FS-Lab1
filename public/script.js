@@ -4,7 +4,7 @@ const deleteModal = document.getElementById("deleteModal");
 const createModal = document.getElementById("createModal");
 const detailsModal = document.getElementById("detailsModal");
 let idList = [];
-fetch('http://localhost:3000/api/albums')
+fetch('https://fs-lab2.onrender.com/api/albums')
   .then(response => response.json())
   .then(data => {
     const span = document.getElementsByClassName("close")[0];
@@ -101,7 +101,7 @@ updateBtn.addEventListener('click', async () => {
   const year = yearText.value;
 
   try {
-    await fetch(`http://localhost:3000/api/albums/${currentId}`, {
+    await fetch(`https://fs-lab2.onrender.com/api/albums/${currentId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: name, artist: artist, year: year })
@@ -121,7 +121,7 @@ const deleteBtn = document.getElementById("deleteButton");
 deleteBtn.addEventListener('click', async () => {
 
   try {
-    await fetch(`http://localhost:3000/api/albums/${currentId}`, {
+    await fetch(`https://fs-lab2.onrender.com/api/albums/${currentId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
     })
@@ -154,7 +154,7 @@ finalCreateBtn.addEventListener('click', async () => {
 
   } else {
     try {
-      await fetch(`http://localhost:3000/api/albums/`, {
+      await fetch(`https://fs-lab2.onrender.com/api/albums/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: name, artist: artist, year: year, _id: id })
